@@ -7,5 +7,11 @@ galaxy_info:
   galaxy_tags:
     - system
     - user
+  platforms:
+    - name: EL
+    - name: Fedora
+    - name: opensuse
+    - name: Ubuntu
+    - name: Debian
   dependencies: []
 
