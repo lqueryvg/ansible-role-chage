@@ -9,22 +9,23 @@ Query & manage the shadow password file on Linux.
 
 ## Examples
 ```yaml
-# force password change on next login
-- chage: user=john sp_lstchg=0
+  # force password change on next login
+  - chage: user=john sp_lstchg=0
 
-# remove an account expiration date.
-- chage: user=john sp_expire=-1
+  # remove an account expiration date.
+  - chage: user=john sp_expire=-1
 
-# set inactivity days after password expired before account is locked
-- chage: user=john sp_inact=14
+  # set inactivity days after password expired before account is locked
+  - chage: user=john sp_inact=14
 
-# set both min and max days in single task
-- chage: user=john sp_min=7 sp_max=28
+  # set both min and max days in single task
+  - chage: user=john sp_min=7 sp_max=28
 
-# display user password warn days
-- chage: user=john
-  register: shadow_data
-- debug: msg={{data.sp_expire}}             # TODO
+  # retrieve then access user's password expiry days
+  - chage: user=john
+    register: result
+
+  - debug: msg={{result.shadow.sp_expire}}
 ```
 
 # Options
