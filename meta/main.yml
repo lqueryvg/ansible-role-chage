@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: John Buxton
+  description: manage shadow password file on Linux
+  license: GPLv3+
+  min_ansible_version: 1.9
+  galaxy_tags:
+    - system
+    - user
+  dependencies: []
+
