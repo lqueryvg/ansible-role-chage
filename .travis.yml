@@ -1,0 +1,20 @@
+---
+sudo: required
+language: python
+python: "2.7"
+
+services:
+  - docker
+
+before_install:
+- mkdir -p ./tmp
+- cp ~/.ssh/id_dsa.pub ./tmp
+- docker build -t chage-centos5 -f Dockerfile.centos5 .
+- docker build -t chage-ubuntu14.04 -f Dockerfile.ubuntu14.04 .
+- rm ./tmp/id_dsa.pub
+- rmdir ./tmp/
+
+notifications:
+  email:
+    on_success: never
+
