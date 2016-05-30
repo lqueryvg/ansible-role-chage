@@ -1,1 +1,4 @@
 .ropeproject
+*.swp
+*.retry
+tmp/
