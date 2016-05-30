@@ -7,6 +7,7 @@ services:
   - docker
 
 before_install:
+- ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
 - mkdir -p ./tmp
 - cp ~/.ssh/id_dsa.pub ./tmp
 - docker build -t chage-centos5 -f Dockerfile.centos5 .
