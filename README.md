@@ -49,8 +49,9 @@ See also `man chage`.
 
 # Requirements
 
-- Python spwd module (included in Python since v2.5 - 2006)
-- chage command
+- `chage` command
+- `/etc/shadow` file (read pwconv man page if `/etc/shadow` does not exist)
+- root access (to read `/etc/shadow` file)
 
 # Role Variables
 

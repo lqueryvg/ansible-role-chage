@@ -17,7 +17,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from __future__ import print_function
 import sys
 
 
@@ -106,21 +105,6 @@ EXAMPLES = """
 """
 
 
-def _spwd_to_dict(s):
-    # Convert spwd structure to a dict.
-    return dict(
-        sp_nam    = str(s.sp_nam),
-        sp_pwd    = str(s.sp_pwd),
-        sp_lstchg = str(s.sp_lstchg),
-        sp_min    = str(s.sp_min),
-        sp_max    = str(s.sp_max),
-        sp_warn   = str(s.sp_warn),
-        sp_inact  = str(s.sp_inact),
-        sp_expire = str(s.sp_expire),
-        sp_flag   = str(s.sp_flag),
-    )
-
-
 def main():
     module = AnsibleModule(
         argument_spec = dict(
@@ -137,20 +121,30 @@ def main():
 
     user = module.params['user']
 
-    # get current shadow entry
+    current_shadow = None
     try:
-        import spwd
-    except:
-        module.fail_json(msg="unable to import Python spwd module")
-
-    try:
-        current_shadow = _spwd_to_dict(spwd.getspnam(user))
-    except:
-        # Sadly, spwd raises KeyError for 2 different reasons...
-        message = "unable to get shadow entry for user '%s' (shadow " \
-                  "entry not found or permission denied)" % user
+        f = open('/etc/shadow', 'r')
+    except IOError, (errno, strerror):
+        message = "unable to open /etc/shadow, I/O error(%s): %s" % (errno, strerror)
         module.fail_json(msg=message)
 
+    for line in f.readlines():
+        line = line.rstrip()
+        fields = line.split(':')
+        if fields[0] == user:
+            current_shadow = dict(zip(
+                ['sp_nam', 'sp_pwd', 'sp_lstchg', 'sp_min', 'sp_max',
+                 'sp_warn', 'sp_inact', 'sp_expire', 'sp_flag'],
+                fields
+            ))
+            break
+            
+    f.close()
+
+    if current_shadow is None:
+        message = "unable to find user %s in /etc/shadow" % user
+        module.fail_json(msg=message)
+        
     chage_flags = dict(
         sp_lstchg = '--lastday',
         sp_min    = '--mindays',
@@ -186,7 +180,7 @@ def main():
     # complete command and run it
     cmd.insert(0, module.get_bin_path('chage', required=True))
     cmd.append(user)
-    print(' '.join(cmd), file=sys.stderr)
+    #print(' '.join(cmd), file=sys.stderr)    # TODO delete, fails on Py2.4
     (rc, out, err) = module.run_command(cmd)
 
     # fail if command didn't work
