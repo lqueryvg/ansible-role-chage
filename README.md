@@ -4,6 +4,10 @@ Query & manage the shadow password file on Linux.
 
 Ansible Galaxy Page: https://galaxy.ansible.com/lqueryvg/chage/
 
+Please star this repo if you thinks it's at all useful; with
+the right encouragement I might try to get it added as a standard
+Ansible module.
+
 ## Features
 - provides an interface to the `chage` command
 - returns a user's shadow file settings as a dictionary
