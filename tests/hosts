@@ -1,0 +1,2 @@
+chage-centos5     ansible_port=32001 ansible_host=localhost ansible_user=root
+chage-ubuntu14.04 ansible_port=32002 ansible_host=localhost ansible_user=root
