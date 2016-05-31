@@ -21,7 +21,7 @@ install:
   - docker run -d -p 32002:22 --name chage-ubuntu14.04 chage-ubuntu14.04
 
 script:
-  - ansible-playbook -i tests/hosts test.yml
+  - ansible-playbook -i tests/hosts tests/test.yml
 
 notifications:
   email:
