@@ -1,12 +1,14 @@
 # Ansible Module: chage
 
+[![Build Status](https://travis-ci.org/lqueryvg/ansible-role-chage.svg?branch=master)](https://travis-ci.org/lqueryvg/ansible-role-chage)
+
 Query & manage the shadow password file on Linux.
 
 Ansible Galaxy Page: https://galaxy.ansible.com/lqueryvg/chage/
 
-Please star this repo if you think it's at all useful; with
-the right encouragement I might try to get it added as a standard
-Ansible module.
+Please star this repo if you think it's useful.
+
+With the right encouragement I will try to get it added as a standard Ansible module.
 
 ## Features
 - provides an interface to the `chage` command
