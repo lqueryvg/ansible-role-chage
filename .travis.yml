@@ -7,13 +7,21 @@ services:
   - docker
 
 before_install:
-- ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
-- mkdir -p tests/tmp
-- cp ~/.ssh/id_dsa.pub tests/tmp
-- docker build -t chage-centos5     -f tests/Dockerfile.centos5     tests
-- docker build -t chage-ubuntu14.04 -f tests/Dockerfile.ubuntu14.04 tests
-- rm tests/tmp/id_dsa.pub
-- rmdir tests/tmp/
+  - ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
+  - mkdir -p tests/tmp
+  - cp ~/.ssh/id_dsa.pub tests/tmp
+  - docker build -t chage-centos5     -f tests/Dockerfile.centos5     tests
+  - docker build -t chage-ubuntu14.04 -f tests/Dockerfile.ubuntu14.04 tests
+  - rm tests/tmp/id_dsa.pub
+  - rmdir tests/tmp/
+
+install:
+  - pip install ansible
+  - docker run -d -p 32001:22 --name chage-centos5 chage-centos5
+	- docker run -d -p 32002:22 --name chage-ubuntu14.04 chage-ubuntu14.04
+
+script:
+	- ansible-playbook -i tests/hosts test.yml
 
 notifications:
   email:
