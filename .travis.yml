@@ -6,8 +6,8 @@ python: "2.7"
 services:
   - docker
 
-#before_install:
-#  - ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
+before_install:
+  - ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
 #  - mkdir -p tests/tmp
 #  - cp ~/.ssh/id_dsa.pub tests/tmp
 #  - docker build -t chage-centos5     -f tests/Dockerfile.centos5     tests
