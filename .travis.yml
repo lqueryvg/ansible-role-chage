@@ -9,7 +9,7 @@ services:
 before_install:
 - ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
 - mkdir -p tests/tmp
-- cp ~/.ssh/id_dsa.pub ./tmp
+- cp ~/.ssh/id_dsa.pub tests/tmp
 - docker build -t chage-centos5     -f tests/Dockerfile.centos5     tests
 - docker build -t chage-ubuntu14.04 -f tests/Dockerfile.ubuntu14.04 tests
 - rm tests/tmp/id_dsa.pub
