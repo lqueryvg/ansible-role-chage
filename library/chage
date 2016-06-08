@@ -111,8 +111,6 @@ def _convert_date(str):  # convert YYYY-MM-DD to days since 1/1/1970
     return delta.days
 
 
-
-
 def main():
     module = AnsibleModule(
         argument_spec = dict(
@@ -177,9 +175,7 @@ def main():
             if param_name in [ 'sp_lstchg', 'sp_expire'] \
                and not desired_value.isdigit():
 
-                print "converting " + param_name + " " + desired_value
                 desired_value = str(_convert_date(desired_value))
-                print "converted value = " + desired_value
 
             if desired_value != current_shadow[param_name]:
                 # need to make a change, so append correct options
