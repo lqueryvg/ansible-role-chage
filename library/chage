@@ -104,6 +104,14 @@ EXAMPLES = """
 - debug: msg={{data.sp_expire}}             # TODO
 """
 
+def _convert_date(str):  # convert YYYY-MM-DD to days since 1/1/1970
+    from datetime import date
+    (y, m, d) = str.split('-')
+    delta = date(int(y), int(m), int(d)) - date(1970, 1, 1)
+    return delta.days
+
+
+
 
 def main():
     module = AnsibleModule(
@@ -165,12 +173,20 @@ def main():
 
         # Only add flags for parameters that need to be changed.
         # check if desired_value different from current value
-        if desired_value is not None \
-           and desired_value != current_shadow[param_name]:
-            # need to make a change, so append correct options
-            cmd.append(flag_name)
-            cmd.append(desired_value)
-            new_shadow[param_name] = desired_value
+        if desired_value is not None:
+            if param_name in [ 'sp_lstchg', 'sp_expire'] \
+               and not desired_value.isdigit():
+
+                print "converting " + param_name + " " + desired_value
+                desired_value = str(_convert_date(desired_value))
+                print "converted value = " + desired_value
+
+            if desired_value != current_shadow[param_name]:
+                # need to make a change, so append correct options
+                cmd.append(flag_name)
+                cmd.append(desired_value)
+                new_shadow[param_name] = desired_value
+
 
     # were any changes needed ?
     if cmd.__len__() == 0:
