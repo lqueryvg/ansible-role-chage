@@ -39,10 +39,26 @@
     chage: user=testuser sp_lstchg=2
     register: st
 
-  - name: check st.changed == True (skips if ok)
+  - name: fail if it didn't change
     fail: msg="st.changed is not True"
     when: "st.changed != True"
 
+  - name: check sp_expire with string
+    chage: user=testuser sp_expire=1990-06-30
+    register: st
+    
+  - name: fail if it didn't change
+    fail: msg="st.changed is not True"
+    when: "st.changed != True"
+  
+  - name: check sp_expire idempotence and with digits
+    chage: user=testuser sp_expire=7305
+    register: st
+
+  - name: fail if it changed
+    fail: msg="st.changed is True"
+    when: "st.changed == True"
+  
   # check 2 sets at once
   
   - name: check 2 sets at once, initialise
