@@ -166,21 +166,32 @@ def main():
     # build return value in case command is successful
     new_shadow = current_shadow
 
+    import re
+    date_pattern = re.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}")
+
     for param_name, flag_name in chage_flags.iteritems():
         desired_value = module.params[param_name]
+        desired_cmd_value = desired_value
 
         # Only add flags for parameters that need to be changed.
         # check if desired_value different from current value
         if desired_value is not None:
+
+            if param_name in [ 'sp_expire', 'sp_inact', 'sp_max' ] \
+               and desired_value == "-1":
+
+                desired_value = ""
+
             if param_name in [ 'sp_lstchg', 'sp_expire'] \
-               and not desired_value.isdigit():
+               and desired_value != ""                   \
+               and date_pattern.match(desired_value):
 
                 desired_value = str(_convert_date(desired_value))
 
             if desired_value != current_shadow[param_name]:
                 # need to make a change, so append correct options
                 cmd.append(flag_name)
-                cmd.append(desired_value)
+                cmd.append(desired_cmd_value)
                 new_shadow[param_name] = desired_value
 
 
@@ -192,12 +203,11 @@ def main():
     # complete command and run it
     cmd.insert(0, module.get_bin_path('chage', required=True))
     cmd.append(user)
-    #print(' '.join(cmd), file=sys.stderr)    # TODO delete, fails on Py2.4
     (rc, out, err) = module.run_command(cmd)
 
     # fail if command didn't work
     if rc is not None and rc != 0:
-        self.module.fail_json(msg=err, rc=rc)
+        module.fail_json(msg=err, rc=rc)
 
     # command succeeded, so return the updated shadow entry
     module.exit_json(shadow=new_shadow, changed=True)

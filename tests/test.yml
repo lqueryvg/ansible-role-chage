@@ -52,9 +52,27 @@
   - name: fail if previous task didn't change
     fail: msg="st.changed is not True"
     when: "st.changed != True"
-  
+
   - name: check sp_expire idempotence and with digits
     chage: user=testuser sp_expire=7485
+    register: st
+
+  - name: fail if previous task changed
+    fail: msg="st.changed is True"
+    when: "st.changed == True"
+
+  - name: sp_expire with -1
+    chage: user=testuser sp_expire=-1
+    register: st
+
+  - name: assert returned sp_expire is empty
+    fail: msg="sp_expire is not empty"
+    when: "{{ st.shadow['sp_expire'] != '' }}"
+
+  - name: check sp_inact idempotence with -1
+    chage: user=testuser sp_inact=-1
+
+  - chage: user=testuser sp_inact=-1
     register: st
 
   - name: fail if previous task changed
