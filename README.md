@@ -46,12 +46,12 @@ See also `man chage`.
 | parameter | required | default | comments
 |:----------|:---------|:--------|:-------------|
 | user      | yes      |         | user name
-| sp_lstchg | no       | None    | chage -d, --lastday    <br>date of last password change 
+| sp_lstchg | no       | None    | chage -d, --lastday    <br>days since 1970/01/01 when password was last changed or date in format YYYY-MM-DD
 | sp_min    | no       | None    | chage -m, --mindays    <br>minimum number of days between changes 
-| sp_max    | no       | None    | chage -M, --maxdays    <br>maximum number of days between changes 
-| sp_warn   | no       | None    | chage -W, --warndays   <br>number of days to warn user to change the password 
-| sp_inact  | no       | None    | chage -I, --inactive   <br>number of days the account may be inactive
-| sp_expire | no       | None    | chage -E, --expiredate <br>number of days since 1970-01-01 until account expires 
+| sp_max    | no       | None    | chage -M, --maxdays    <br>maximum number of days between changes or remove with -1
+| sp_warn   | no       | None    | chage -W, --warndays   <br>number of days before password expiry to warn user to change password
+| sp_inact  | no       | None    | chage -I, --inactive   <br>set number of days the account may be inactive remove the field by passing value of -1
+| sp_expire | no       | None    | chage -E, --expiredate <br>days since 1970-01-01 until account expires or date in format YYYY-MM-DD$
 
 # Requirements
 

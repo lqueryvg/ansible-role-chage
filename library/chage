@@ -33,6 +33,8 @@ description:
         - /usr/include/shadow.h
         - man chage
         - pydoc spwd
+    - dates must be in the form YYYY-MM-DD
+
 notes: []
 version_added: null
 author:
@@ -47,42 +49,49 @@ options:
         required: false
         default: null
         description:
-          - set date of last password change
-            chage option = -d, --lastday
+          - days since 1970/01/01 when password was last changed
+            or date in format YYYY-MM-DD
+          - chage option = -d, --lastday
 
     sp_min:
         required: false
         default: null
         description:
           - set minimum number of days between changes
-            chage option = -m, --mindays
+          - chage option = -m, --mindays
+
     sp_max:
         required: false
         default: null
         description:
           - set maximum number of days between changes
-            chage option = -M, --maxdays
+          - chage option = -M, --maxdays
+          - remove the field by passing value of -1
 
     sp_warn:
         required: false
         default: null
         description:
-          - set number of days to warn user to change the password
-            chage option = -W, --warndays
+          - set number of days before password expiry
+            to warn user to change the password
+          - chage option = -W, --warndays
 
     sp_inact:
         required: false
         default: null
         description:
           - set number of days the account may be inactive
-            chage option = -I, --inactive
+          - chage option = -I, --inactive
+          - remove the field by passing value of -1
 
     sp_expire:
         required: false
         default: null
         description:
           - set number of days since 1970-01-01 until account expires
-            chage option = -E, --expiredate
+            or date in format YYYY-MM-DD
+          - chage option = -E, --expiredate
+          - remove the field by passing value of -1
 """
 
 EXAMPLES = """
@@ -101,7 +110,7 @@ EXAMPLES = """
 # display user password warn days
 - chage: user=john
   register: shadow_data
-- debug: msg={{data.sp_expire}}             # TODO
+- debug: msg={{shadow_data.sp_expire}}
 """
 
 def _convert_date(str):  # convert YYYY-MM-DD to days since 1/1/1970
