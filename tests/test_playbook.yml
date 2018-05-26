@@ -33,10 +33,10 @@
     fail: msg=failed
     when: "{{st.shadow['sp_lstchg']}} != 3"
 
-  # check change
+  # check that setting to a different using the alias makes a change
   
-  - name: set sp_lstchg to 2
-    chage: user=testuser sp_lstchg=2
+  - name: set lastday to 2
+    chage: user=testuser lastday=2
     register: st
 
   - name: fail if previous task didn't change
@@ -53,8 +53,8 @@
     fail: msg="st.changed is not True"
     when: "st.changed != True"
 
-  - name: check sp_expire idempotence and with digits
-    chage: user=testuser sp_expire=7485
+  - name: check sp_expire idempotence and with digits and alias
+    chage: user=testuser expiredate=7485
     register: st
 
   - name: fail if previous task changed

@@ -7,7 +7,7 @@ services:
   - docker
 
 before_install:
-  - ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
+  - ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 
 install:
   - pip install ansible
