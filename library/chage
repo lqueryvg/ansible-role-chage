@@ -144,7 +144,7 @@ def main():
             sp_inact  = dict(required=False, aliases=['inactive'],   default=None),
             sp_expire = dict(required=False, aliases=['expiredate'], default=None),
         ),
-        supports_check_mode = False,    # TODO
+        supports_check_mode = True
     )
 
     user = module.params['user']
@@ -221,6 +221,9 @@ def main():
     if cmd.__len__() == 0:
         # no changes needed
         module.exit_json(shadow=current_shadow, changed=False)
+
+    if module.check_mode:
+        module.exit_json(shadow=new_shadow, changed=True)
 
     # complete command and run it
     cmd.insert(0, module.get_bin_path('chage', required=True))
